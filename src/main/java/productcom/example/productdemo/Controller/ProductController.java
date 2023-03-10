@@ -5,8 +5,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import productcom.example.productdemo.DTO.OrderRepository;
 import productcom.example.productdemo.DTO.ProductRepository;
+import productcom.example.productdemo.Entity.Order;
 import productcom.example.productdemo.Entity.Product;
+import productcom.example.productdemo.Service.OrderServiceImpl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -18,9 +21,12 @@ import java.util.*;
 
 @RestController
 public class ProductController {
-
+@Autowired
+private OrderServiceImpl orderService;
     @Autowired
    private ProductRepository productRepository;
+    @Autowired
+    private OrderRepository orderRepository;
     @GetMapping("/viewall")
     public List<Product> getProduct(Product product){
 
@@ -49,6 +55,12 @@ public class ProductController {
              hm.put("status","invalid manufacture date");
              return hm;
         }
+
+    }
+@PostMapping("/addorder")
+    public String addorder(@RequestBody Order order) throws  ParseException{
+        orderRepository.save(order);
+        return "created";
 
     }
 }
